@@ -37,7 +37,7 @@ Stood up a Windows Server 2022 domain controller: installed the AD DS role, then
 Created an Organizational Unit and the domain user accounts used later as spray targets.
 
 ![Creating a new Organizational Unit](02f-new-ou.png)
-![Active Directory Users and Computers with OU and accounts](02g-active-directory-final.png)
+
 
 ---
 
