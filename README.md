@@ -61,7 +61,7 @@ Installed Sysmon on the endpoints for richer process, network, and logon telemet
 
 From the Kali VM, ran a password spray attack against the domain controller using **NetExec** (the actively maintained successor to CrackMapExec). It tests a small set of common passwords across multiple domain accounts to avoid account lockout thresholds while still triggering detection-worthy failed logon activity.
 
-![Password spray attack with NetExec](06-password-spray-attack.png)
+![Password spray attack with NetExec](06-password-spray-attackk.png)
 
 This generated a mix of:
 - **Event ID 4625**, failed logon attempts across the sprayed accounts
