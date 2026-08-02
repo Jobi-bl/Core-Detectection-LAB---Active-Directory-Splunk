@@ -98,6 +98,8 @@ Turned the detection search into a **scheduled Splunk alert** so it runs continu
 Built a Splunk dashboard to give an at-a-glance view of authentication activity: failed vs. successful logons over time, top targeted accounts, and top source hosts. This is for ongoing monitoring rather than one-off investigation.
 
 ![SOC monitoring dashboard](10-soc-dashboard.png)
+![SOC monitoring dashboard](10-soc-dashboardd.png)
+![SOC monitoring dashboard](10-soc-dashboarddd.png)
 
 ---
 
