@@ -21,7 +21,6 @@ This project simulates a real attack scenario end to end. Build the infrastructu
 
 All four machines run as VirtualBox VMs on an isolated internal network.
 
-![Lab infrastructure, VirtualBox VM inventory](01-lab-infrastructure.png)
 
 ---
 
