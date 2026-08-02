@@ -10,7 +10,7 @@ This project simulates a real attack scenario end to end. Build the infrastructu
 
 ## Architecture
 
-![Lab architecture diagram](00-architecture-diagram.svg)
+![Lab architecture diagram](assets/images/00-architecture-diagram.svg)
 
 | Role | System |
 |---|---|
@@ -28,15 +28,15 @@ All four machines run as VirtualBox VMs on an isolated internal network.
 
 Stood up a Windows Server 2022 domain controller: installed the AD DS role, then ran the Active Directory Domain Services Configuration Wizard to promote the server and stand up a new forest with the root domain `lab.local`.
 
-![Server Manager dashboard before role install](02a-server-manager-dashboard.png)
-![ADDS deployment configuration, add a new forest](02b-adds-deployment-config.png)
-![Specifying the root domain name](02c-domain-name.png)
-![Domain controller options, functional level, DNS, Global Catalog](02d-domain-controller-options.png)
-![AD DS configuration wizard installing](02e-adds-install-progress.png)
+![Server Manager dashboard before role install](assets/images/02a-server-manager-dashboard.png)
+![ADDS deployment configuration, add a new forest](assets/images/02b-adds-deployment-config.png)
+![Specifying the root domain name](assets/images/02c-domain-name.png)
+![Domain controller options, functional level, DNS, Global Catalog](assets/images/02d-domain-controller-options.png)
+![AD DS configuration wizard installing](assets/images/02e-adds-install-progress.png)
 
 Created an Organizational Unit and the domain user accounts used later as spray targets.
 
-![Creating a new Organizational Unit](02f-new-ou.png)
+![Creating a new Organizational Unit](assets/images/02f-new-ou.png)
 
 
 ---
@@ -45,15 +45,15 @@ Created an Organizational Unit and the domain user accounts used later as spray 
 
 Installed Splunk Enterprise on Ubuntu Server as the central log collection and analysis platform.
 
-![Splunk Enterprise installation](03-splunk-install.png)
+![Splunk Enterprise installation](assets/images/03-splunk-install.png)
 
 Deployed the Splunk Universal Forwarder to the domain controller and Windows 10 endpoint to ship Windows Event Logs into Splunk, and created a dedicated `endpoint` index to receive them.
 
-![Universal Forwarder / data input configuration](04-universal-forwarder.png)
+![Universal Forwarder / data input configuration](assets/images/04-universal-forwarder.png)
 
 Installed Sysmon on the endpoints for richer process, network, and logon telemetry beyond native Windows Event Logs, and configured it to forward into Splunk as well.
 
-![Sysmon installation and configuration](05-sysmon-config.png)
+![Sysmon installation and configuration](assets/images/05-sysmon-config.png)
 
 ---
 
@@ -61,13 +61,13 @@ Installed Sysmon on the endpoints for richer process, network, and logon telemet
 
 From the Kali VM, ran a password spray attack against the domain controller using **NetExec** (the actively maintained successor to CrackMapExec). It tests a small set of common passwords across multiple domain accounts to avoid account lockout thresholds while still triggering detection-worthy failed logon activity.
 
-![Password spray attack with NetExec](06-password-spray-attackk.png)
+![Password spray attack with NetExec](assets/images/06-password-spray-attackk.png)
 
 This generated a mix of:
 - **Event ID 4625**, failed logon attempts across the sprayed accounts
 - **Event ID 4624**, the successful logon(s) that a real spray would eventually land
 
-![Failed authentication events in Splunk](07-failed-auth-events.png)
+![Failed authentication events in Splunk](assets/images/07-failed-auth-events.png)
 
 ---
 
@@ -82,13 +82,13 @@ index=endpoint EventCode=4625
 | where unique_users >= 5
 ```
 
-![SPL detection query and search results](08-spl-detection-query.png)
+![SPL detection query and search results](assets/images/08-spl-detection-query.png)
 
 Then confirmed the successful hit: searched EventCode=4624 (successful logon) for the same source and time window to find the one account whose password matched the spray list. That's the moment the attack would have actually gotten in.
 
 Turned the detection search into a **scheduled Splunk alert** so it runs continuously and fires when spray-like behavior is detected, instead of relying on manual hunting.
 
-![Scheduled alert configuration](09-scheduled-alert.png)
+![Scheduled alert configuration](assets/images/09-scheduled-alert.png)
 
 ---
 
@@ -96,9 +96,9 @@ Turned the detection search into a **scheduled Splunk alert** so it runs continu
 
 Built a Splunk dashboard to give an at-a-glance view of authentication activity: failed vs. successful logons over time, top targeted accounts, and top source hosts. This is for ongoing monitoring rather than one-off investigation.
 
-![SOC monitoring dashboard](10-soc-dashboard.png)
-![SOC monitoring dashboard](10-soc-dashboardd.png)
-![SOC monitoring dashboard](10-soc-dashboarddd.png)
+![SOC monitoring dashboard](assets/images/10-soc-dashboard.png)
+![SOC monitoring dashboard](assets/images/10-soc-dashboardd.png)
+![SOC monitoring dashboard](assets/images/10-soc-dashboarddd.png)
 
 ---
 
